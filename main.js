@@ -1,22 +1,23 @@
-import input from 'input'
-
-function pyramid(char, maxHeight) {
-      
-    for (let height = 1 ; height <= maxHeight; height += 1) {
-        let output = '';
-        for (let len = 0; len < height; len += 1) {
-            output += char;
-        }
-        console.log(output);
-    }
+import got from 'got';
+import http from 'http';
+async function main(){
+    const responce = await got("httpbin.org/get")
+    const data = responce.body;
+    const options = {
+        method: 'get',
+        hostname: 'httpbin.org/get',
+        path: '/',
+    };
+    http.request(options, (res) =>{
+        let data = '';
+        res.on('data', (chunk) =>{
+            data += chunk.toString();
+        });
+        res.on('end', () =>{
+            console.log('All done !');
+            console.log(`Here is the data ${data}`)
+        })
+    })
 }
 
-async function main() {
-    const char = await input.text ('what character would you like?')
-    const height = await input.text('what is the height you would like ?')
-    pyramid(char, height)
-
-
-    }
-
-main ()
+main()
